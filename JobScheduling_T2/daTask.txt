@@ -1,0 +1,5 @@
+Task 0: Priority: 2, Arrival: 0, Waiting: 5
+Task 1: Priority: 3, Arrival: 0, Waiting: 2
+Task 2: Priority: 1, Arrival: 1, Waiting: 4
+Task 3: Priority: 4, Arrival: 3, Waiting: 1
+Task 4: Priority: 5, Arrival: 5, Waiting: 2
