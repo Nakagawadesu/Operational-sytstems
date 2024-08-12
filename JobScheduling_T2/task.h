@@ -8,14 +8,17 @@ typedef struct Task{
     int id;
     int priority;
     int arrival;
+    int completness;
     int waiting;
 } Task;
 
-Task * createTask(int priority, int arrival, int waiting){
+Task * createTask(int id , int priority, int arrival, int waiting){
     Task * task  = (Task *)malloc(sizeof(Task));
+    task->id = id;
     task->priority = priority;
     task->arrival = arrival;
     task->waiting = waiting;
+    task->completness = 0;
     return task;
 }
 Task * InitTask(int n){
@@ -24,9 +27,12 @@ Task * InitTask(int n){
 }
 
 
-void printTasks(Task * task, int n){
+void printTasks(Task * task, int n)
+{
+
+   printf("\033[34m Tasks \n");
     for(int i = 0; i < n; i++){
-        printf("Task %d: Priority: %d, Arrival: %d, Waiting: %d\n", i, task[i].priority, task[i].arrival, task[i].waiting);
+        printf("Task %d: Priority: %d, Arrival: %d, Waiting: %d\n", task[i].id, task[i].priority, task[i].arrival, task[i].waiting);
     }
 }
 
@@ -44,7 +50,6 @@ Solution * createSolution(int id, int started, int ended){
     solution->ended = ended;
     return solution;
 }
-
 
 #endif
 
