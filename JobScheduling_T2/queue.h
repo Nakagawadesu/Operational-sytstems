@@ -9,30 +9,25 @@ typedef struct Queue{
     QueueCell * front;
     QueueCell * rear;
     int size;
-    int capacity;
 } Queue;
 
 QueueCell * createQueueCell(Task task){
     QueueCell * cell = (QueueCell *)malloc(sizeof(QueueCell));
-    cell->task = task;
+    Task * newTask = createTask(task.id ,task.priority, task.arrival, task.waiting);
+    cell->task = *newTask;
     cell->next = NULL;
     return cell;
 }
-Queue * createQueue(int capacity){
+Queue * createQueue(){
     Queue * queue = (Queue *)malloc(sizeof(Queue));
     queue->front = NULL;
     queue->rear = NULL;
     queue->size = 0;
-    queue->capacity = capacity;
     return queue;
 }
 
 void enqueue(Queue * queue, Task task){
     
-    if(queue->size == queue->capacity){
-        printf("Queue is full\n");
-        return;
-    }
 
     QueueCell * cell = createQueueCell(task);
     if(queue->size == 0){
@@ -57,11 +52,20 @@ void dequeue(Queue * queue){
     queue->size--;
     return ;
 }
-
+int  isInQueue(Queue * queue, int taskId){
+    QueueCell * current = queue->front;
+    while(current != NULL){
+        if(current->task.id == taskId){
+            return 1;
+        }
+        current = current->next;
+    }
+    return 0;
+}
 void printQueue(Queue * queue){
     QueueCell * current = queue->front;
     while(current != NULL){
-        printf("Task: Priority: %d, Arrival: %d, Waiting: %d\n", current->task.priority, current->task.arrival, current->task.waiting);
+        printf("Task %d: Priority: %d, Arrival: %d, Waiting: %d\n", current->task.id, current->task.priority, current->task.arrival, current->task.waiting);
         current = current->next;
     }
     return ;
