@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#define MAX_TASKS 100
 
 typedef struct {
     int id;
@@ -10,68 +7,85 @@ typedef struct {
     int ended;
 } GanttTask;
 
-void readTasksFromFile(const char *filename, GanttTask tasks[], int *numTasks) {
-    FILE *file = fopen(filename, "r");
-    if (!file) {
-        perror("Failed to open file");
-        exit(EXIT_FAILURE);
-    }
-
-    *numTasks = 0;
-    while (fscanf(file, "Task %d: Started: %d, Ended: %d\n", 
-                  &tasks[*numTasks].id, 
-                  &tasks[*numTasks].started, 
-                  &tasks[*numTasks].ended) == 3) {
-        (*numTasks)++;
-    }
-
-    fclose(file);
+GanttTask * createGanttTask(int id, int started, int ended) {
+    GanttTask * task = (GanttTask *)malloc(sizeof(GanttTask));
+    task->id = id;
+    task->started = started;
+    task->ended = ended;
+    return task;
+}
+GanttTask * InitGanttTask(int n) {
+    GanttTask * tasks = (GanttTask *)malloc(n * sizeof(GanttTask));
+    return tasks;
 }
 
-void printGanttChart(GanttTask tasks[], int numTasks) {
-    int i, j;
+GanttTask * readGanttTasks(char * filename) {
+    FILE * file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file.\n");
+        return NULL;
+    }
 
-    printf("+");
-    for (i = 0; i < numTasks; i++) {
-        int length = tasks[i].ended - tasks[i].started + 1;
-        for (j = 0; j < length; j++) {
-            printf("-");
+
+    GanttTask * tasks = InitGanttTask(5);
+    for (int i = 0; i < 5; i++) {
+        fscanf(file, "Task %d: Started: %d, Ended: %d\n", &tasks[i].id, &tasks[i].started, &tasks[i].ended);
+    }
+    fclose(file);
+
+    return tasks;
+}
+int findMaxEndTime(GanttTask tasks[5]) {
+    int maxEndTime = 0;
+    for (int i = 0; i < 5; i++) {
+        if (tasks[i].ended > maxEndTime) {
+            maxEndTime = tasks[i].ended;
         }
-        printf("+");
     }
-    printf("\n");
+    return maxEndTime;
+}
 
-    printf("|");
-    for (i = 0; i < numTasks; i++) {
-        int length = tasks[i].ended - tasks[i].started + 1;
-        printf("Task%d|", tasks[i].id);
-    }
-    printf("\n");
-
-    printf("+");
-    for (i = 0; i < numTasks; i++) {
-        int length = tasks[i].ended - tasks[i].started + 1;
-        for (j = 0; j < length; j++) {
-            printf("-");
+void ganttPrinter(
+    GanttTask tasks[5],
+    int maxEndTime
+){
+for (int i = 0; i < 5; i++) {
+        printf("Task %d: ", tasks[i].id);
+        for (int j = 0; j <= maxEndTime; j++) {
+            if (j >= tasks[i].started && j < tasks[i].ended) {
+                printf("█");
+            } else {
+                printf(" ");
+            }
         }
-        printf("+");
+        printf("\n");
+    }
+
+    printf("Time  : ");
+    for (int j = 0; j <= maxEndTime; j++) {
+        printf("%d", j % 10);
     }
     printf("\n");
-
-    printf(" ");
-    for (i = 0; i < numTasks; i++) {
-        printf("%d    ", tasks[i].started);
-    }
-    printf("%d\n", tasks[numTasks-1].ended);
 }
 
 int main() {
-    GanttTask tasks[MAX_TASKS];
-    int numTasks = 0;       
+   
+    GanttTask  * tasks   = readGanttTasks("FCFS.txt");
+    int maxEndTime = findMaxEndTime(tasks);
+    GanttTask * tasks2 = readGanttTasks("SJF.txt");
+    int maxEndTime2 = findMaxEndTime(tasks2);
 
-    readTasksFromFile("SJF.txt", tasks, &numTasks);
+
+    printf("\033[32m FCFS Gantt Chart\n");
+    ganttPrinter(tasks, maxEndTime);
+    printf("\n");
+    printf("\033[33m SJF Gantt Chart\n");
+    ganttPrinter(tasks2, maxEndTime2);
     
-    printGanttChart(tasks, numTasks);
+
+
+
+    
 
     return 0;
 }
