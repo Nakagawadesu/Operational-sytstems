@@ -15,3 +15,15 @@ After compiling, you can run the executable with:
 ```bash
 ./main
 ```
+
+To run be able to seee the Gantt diagram in the terminal 
+
+```bash
+gcc -o main main.c
+```
+
+and then
+
+```bash
+./gantt
+```
