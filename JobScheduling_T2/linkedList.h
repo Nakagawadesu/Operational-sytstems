@@ -95,6 +95,11 @@ int isInList(LinkedList * list, int taskId){
     return 0;
 }
 Task  getShortestTask(LinkedList * list){
+    if(list->size == 0){
+        printf("List is empty\n");
+        Task task;
+        return task;
+    }
     Node * current = list->head;
     Task shortestTask = current->task;
     if(current->next == NULL){
@@ -115,6 +120,23 @@ Task  getShortestTask(LinkedList * list){
     }
 
 }
-
+Task getHighestPriorityTask(LinkedList * list){
+    Node * current = list->head;
+    Task highestPriorityTask = current->task;
+    if(current->next == NULL){
+        removeNode(list, current->task.id);
+        return highestPriorityTask;
+    }
+    else{
+    while(current != NULL){
+        if(current->task.priority < highestPriorityTask.priority){
+            highestPriorityTask = current->task;
+        }
+        current = current->next;
+    }
+    removeNode(list, highestPriorityTask.id);
+    return highestPriorityTask;
+    }
+}
 
 #endif
