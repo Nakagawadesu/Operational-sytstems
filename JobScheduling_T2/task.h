@@ -29,7 +29,6 @@ Task * InitTask(int n){
 
 void printTasks(Task * task, int n)
 {
-
    printf("\033[34m Tasks \n");
     for(int i = 0; i < n; i++){
         printf("Task %d: Priority: %d, Arrival: %d, Waiting: %d\n", task[i].id, task[i].priority, task[i].arrival, task[i].waiting);

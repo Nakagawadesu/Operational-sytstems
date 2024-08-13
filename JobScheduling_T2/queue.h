@@ -70,3 +70,20 @@ void printQueue(Queue * queue){
     }
     return ;
 }
+void moveToFront(Queue * queue, int taskId){
+    QueueCell * current = queue->front;
+    QueueCell * previous = NULL;
+    while(current != NULL){
+        if(current->task.id == taskId){
+            if(previous != NULL){
+                previous->next = current->next;
+                current->next = queue->front;
+                queue->front = current;
+                return;
+            }
+        }
+        previous = current;
+        current = current->next;
+    }
+    return;
+}
