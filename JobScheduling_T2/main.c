@@ -52,9 +52,15 @@ int main(){
         printf("Task %d: Started: %d, Ended: %d\n", solutions2[i].id, solutions2[i].started, solutions2[i].ended);
     }
 
+
+    Solution *solutions3 = priorityBased(tasks, n);
+    printf("\033[35m PriorityBased - solution \n");
+    for(int i = 0; i < n; i++){
+        printf("Task %d: Started: %d, Ended: %d\n", solutions3[i].id, solutions3[i].started, solutions3[i].ended);
+    }
+
     free(tasks);
 
-    // write solution and solution 2 to different files
     FILE *file1 = fopen("SJF.txt", "w");
     if (file1 == NULL) {
         printf("Error: Could not open file.\n");
@@ -76,6 +82,20 @@ int main(){
         fprintf(file2, "Task %d: Started: %d, Ended: %d\n", solutions2[i].id, solutions2[i].started, solutions2[i].ended);
     }
     fclose(file2);
+    free(solutions2);
+
+
+
+   
+    FILE *file3 = fopen("PriorityBased.txt", "w");
+    if (file3 == NULL) {
+        printf("Error: Could not open file.\n");
+        return 1;
+    }
+    for(int i = 0; i < n; i++){
+        fprintf(file3, "Task %d: Started: %d, Ended: %d\n", solutions2[i].id, solutions2[i].started, solutions2[i].ended);
+    }
+    fclose(file3);
     free(solutions2);
 
     return 0;
