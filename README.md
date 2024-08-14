@@ -16,10 +16,10 @@ After compiling, you can run the executable with:
 ./main
 ```
 
-To run be able to seee the Gantt diagram in the terminal 
+To run be able to seee the Gantt diagram in the terminal
 
 ```bash
-gcc -o main main.c
+gcc -o gantt ganttGenerator.c
 ```
 
 and then
